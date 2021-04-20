@@ -1,6 +1,6 @@
 # ndmath
 
-ndmath is a Python library for N-dimensional complex step differentiation and Newton's method.
+ndmath is a Python library for N-dimensional complex step and finite step differentiation, and Newton's method.
 
 ## Installation
 
