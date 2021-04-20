@@ -3,12 +3,14 @@ import numpy as np
 def finiteGrad(func, x0, step):
     """This function returns the jacobian of function 'func', at the location specified by 'x0', using the forward step method
     
-    ATTRIBUTES:
+    PARAMETERS
+    ----------
     func (function): Function to perform complex differentiation
     x0 (float list/array): Location to calculate gradient of function 'func'
     step (float): Step-size
     
-    EXAMPLE:
+    EXAMPLE
+    -------
     finiteGrad(lambda x : x**2, [1], 10**-7)
     """
     x0 = np.array(x0)
@@ -21,15 +23,18 @@ def finiteGrad(func, x0, step):
 def complexGrad(func, x0):
     """This function returns the jacobian of function 'func', at the location specified by 'x0', using the complex step method
     
-    ATTRIBUTES:
+    PARAMETERS
+    ----------
     func (function): Function to perform complex differentiation
     x0 (float list/array): Location to calculate gradient of function 'func'
     
-    EXAMPLE:
+    EXAMPLE
+    -------
     complexGrad(lambda x : x**2, [1])
     
-    IMPORTANT:
-    Make sure that the function 'func' has been properly modified for the complex-step differentiation method.
+    IMPORTANT
+    ---------
+    Make sure that the function 'func' has been properly modified for the complex-step differentiation method. E.g., some objects do not store complex parts
     """
     xLength = len(x0)
     h = 10**-30 #step size (arbitrarily small, no need to modify)
@@ -39,7 +44,8 @@ def complexGrad(func, x0):
 def nDimNewton(func, x0, fprime, tol=10**-6, maxiter=50, xlim=None, heh=True, hehcon=None):
     """This is the root finding Newton Method for n-dimensions
     
-    ATTRIBUTES:
+    PARAMETERS
+    ----------
     func (function): n-dim function to find root for, where n > 1
     x0 (float list/array): Initial estimate
     fprime (function): Function returning the Jacobian matrix
@@ -47,7 +53,16 @@ def nDimNewton(func, x0, fprime, tol=10**-6, maxiter=50, xlim=None, heh=True, he
     maxiter (float): Maximum number of interations (default to 50)
     xlim (array): Inclusive limits to raise an exception for x, in the form of np.array([[x[0]_lower, x[0]_upper], [x[1]_lower, x[1]_upper], ...]) (default to None)
     heh (boolean): Heuristic error handling (default to True)
-    hehcon (function): Constraint for heuristic error handling, namely assuring that hehcon(x)<=0 during iterations. This is used to keep func inside a valid domain during interations, not to constrain the solution (default to None)
+    hehcon (function): Constraint for heuristic error handling assuring that hehcon(x)[m]<=0 during iterations, where m>=0. This is used to keep func inside a valid domain during interations, not for constraining the solution (default to None)
+    
+    EXAMPLE
+    -------
+    def func(x):
+        return [(x[1]-3)**2+x[0]-5, 2*x[1]+x[0]**3]
+    def fprime(x):
+        return ndmath.complexGrad(func, x)
+    x0 = [0,0]
+    nDimNewton(func, x0, fprime)
     """
     #Initialize values
     k = 1 #Iteration count
@@ -56,7 +71,7 @@ def nDimNewton(func, x0, fprime, tol=10**-6, maxiter=50, xlim=None, heh=True, he
     f = func(x)
     
     if heh and hehcon is not None and any(np.asarray(hehcon(x)) > 0):
-        raise RuntimeError("Initial estimate, x0, does not satisfy hehcon(x0)<=0. Try a different x0.")
+        raise RuntimeError("Initial estimate, x0, does not satisfy hehcon(x0)[:]<=0. Try a different x0.", stacklevel=2)
     
     while np.linalg.norm(f) > tol:
         Df = fprime(x)
@@ -80,12 +95,12 @@ def nDimNewton(func, x0, fprime, tol=10**-6, maxiter=50, xlim=None, heh=True, he
             #Check if result is out of the user-defined limits
             runaways = [['x['+str(i)+']' for i in range(len(x)) if x[i]<=xlim[i,0] and v[i]<0], ['x['+str(i)+']' for i in range(len(x)) if x[i]>=xlim[i,1] and v[i]>0]]
             if any(runaways):
-                message = 'No solution found. Iteration stopped because the following variables were found to be outside the user-defined limits:\n'
+                message = 'No solution found inside the constraints. Iteration stopped because the following variables were found to be outside the user-defined limits: \n'
                 if runaways[0]:
-                    message += ', '.join(runaways[0]) + ' <= lower bound/n'
+                    message += ', '.join(runaways[0]) + ' <= lower bound \n'
                 if runaways[1]:
-                    message += ', '.join(runaways[1]) + ' >= upper bound/n'
-                raise RuntimeError(message)
+                    message += ', '.join(runaways[1]) + ' >= upper bound \n'
+                raise RuntimeError(message, stacklevel=2)
         
         x = x + v
         
@@ -99,7 +114,7 @@ def nDimNewton(func, x0, fprime, tol=10**-6, maxiter=50, xlim=None, heh=True, he
             
         #Exit loop if maximum allowed iterations is reached
         if k == maxiter:
-            raise RuntimeError('Solution did not converge after the maximum number of iterations.')
+            raise RuntimeError('Solution did not converge after the maximum number of iterations.', stacklevel=2)
         else:
             k += 1
         
