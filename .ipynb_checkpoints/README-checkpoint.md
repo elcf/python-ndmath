@@ -34,13 +34,10 @@ ndmath.nDimNewton(func, x0, fprime) # returns array([-1.02890183,  0.54461778])
 
 ## Dependencies
 
-* [NumPy](https://numpy.org/)
+NumPy
 
 ## Contributing
 Pull requests are welcome. Feel free to open an issue first to discuss what you would like to change.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
-
-## References
-* Martins, J. R. R. A., Sturdza, P., and Alonso, J. J., 2003, "The Complex-Step Derivative Approximation," ACM Trans. Math. Software, 29(3), pp. 245–262.
