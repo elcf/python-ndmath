@@ -43,4 +43,4 @@ Pull requests are welcome. Feel free to open an issue first to discuss what you 
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## References
-* Martins, J. R. R. A., Sturdza, P., and Alonso, J. J., 2003, "The Complex-Step Derivative Approximation," ACM Trans. Math. Software, 29(3), pp. 245–262.
+* Martins, J. R. R. A., Sturdza, P., and Alonso, J. J., 2003, "The Complex-Step Derivative Approximation," ACM Trans. Math. Software, 29(3), pp. 245â€“262.
