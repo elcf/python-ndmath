@@ -71,7 +71,7 @@ def nDimNewton(func, x0, fprime, tol=10**-6, maxiter=50, xlim=None, heh=True, he
     f = func(x)
     
     if heh and hehcon is not None and any(np.asarray(hehcon(x)) > 0):
-        raise RuntimeError("Initial estimate, x0, does not satisfy hehcon(x0)[:]<=0. Try a different x0.", stacklevel=2)
+        raise RuntimeError("Initial estimate, x0, does not satisfy hehcon(x0)[:]<=0. Try a different x0.")
     
     while np.linalg.norm(f) > tol:
         Df = fprime(x)
@@ -100,7 +100,7 @@ def nDimNewton(func, x0, fprime, tol=10**-6, maxiter=50, xlim=None, heh=True, he
                     message += ', '.join(runaways[0]) + ' <= lower bound \n'
                 if runaways[1]:
                     message += ', '.join(runaways[1]) + ' >= upper bound \n'
-                raise RuntimeError(message, stacklevel=2)
+                raise RuntimeError(message)
         
         x = x + v
         
@@ -114,7 +114,7 @@ def nDimNewton(func, x0, fprime, tol=10**-6, maxiter=50, xlim=None, heh=True, he
             
         #Exit loop if maximum allowed iterations is reached
         if k == maxiter:
-            raise RuntimeError('Solution did not converge after the maximum number of iterations.', stacklevel=2)
+            raise RuntimeError('Solution did not converge after the maximum number of iterations.')
         else:
             k += 1
         

@@ -72,3 +72,11 @@ docs/_build
 
 # Mypy Cache
 .mypy_cache/
+
+# Jupyter
+.ipynb_checkpoints
+test.ipynb
+
+# Misc
+TODO.txt
+
