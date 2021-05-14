@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="ndmath",
-    version="0.0.4",
+    version="0.0.5",
     author="Esteban L. Castro-Feliciano",
     author_email="ecastro@crown-hydro.com",
     description="N-dimensional complex step and finite step differentiation, and Newton's method.",
